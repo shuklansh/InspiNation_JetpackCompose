@@ -79,4 +79,6 @@ dependencies {
 //    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.5.3")
 
+    implementation "me.onebone:toolbar-compose:2.3.2"
+
 }

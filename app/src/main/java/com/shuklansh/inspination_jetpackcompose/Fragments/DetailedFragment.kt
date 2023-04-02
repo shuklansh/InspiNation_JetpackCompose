@@ -51,7 +51,7 @@ class DetailedFragment : Fragment() {
             .setTitle(filename)
             .setDestinationInExternalPublicDir(
                 Environment.DIRECTORY_DOWNLOADS,
-                File.separator + filename + ".jpeg"
+                File.separator + filename + ".jpg"
             )
         dm?.enqueue(request)
         Toast.makeText(activity as Context, "Downloaded", Toast.LENGTH_SHORT).show()
