@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
                 var loaded by mutableStateOf(false)
                 var scope = rememberCoroutineScope()
                 var keyboard = LocalSoftwareKeyboardController.current
-                var query by remember { mutableStateOf("") }
+                var query by remember { mutableStateOf("new york") }
                 var listofPhotosResp by rememberSaveable {
                     mutableStateOf(
                         listOf(
@@ -84,7 +84,8 @@ class HomeFragment : Fragment() {
                                         content = {
                                             Icon(
                                                 Icons.Default.Search,
-                                                contentDescription = "submit"
+                                                contentDescription = "submit",
+                                                tint = Color.Black
                                             )
                                         },
                                         onClick = {
@@ -109,7 +110,7 @@ class HomeFragment : Fragment() {
                                 colors = TextFieldDefaults.textFieldColors(
                                     focusedIndicatorColor = Color.Transparent,
                                     unfocusedIndicatorColor = Color.Transparent,
-                                    backgroundColor = Color.LightGray,
+                                    backgroundColor = Color.Magenta.copy(alpha=0.75f),
                                     cursorColor = Color.Black,
                                     textColor = Color.Black
 
@@ -160,6 +161,10 @@ class HomeFragment : Fragment() {
                                                             bundle.putString(
                                                                 "photographerurl",
                                                                 it.photographer_url
+                                                            )
+                                                            bundle.putString(
+                                                                "id",
+                                                                it.id.toString()
                                                             )
                                                             findNavController().navigate(
                                                                 R.id.action_homeFragment_to_detailedFragment,
