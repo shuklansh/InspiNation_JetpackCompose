@@ -140,142 +140,146 @@ class HomeFragment : Fragment() {
                                        }
 
 
-                                   }){}
+                                   }){
+
+                                   Column(
+                                       modifier = Modifier
+                                           .fillMaxSize()
+                                           .padding(8.dp)
+                                   ) {
+
+                                       TextField(
+                                           trailingIcon = {
+                                               IconButton(
+                                                   content = {
+                                                       Icon(
+                                                           Icons.Default.Search,
+                                                           contentDescription = "submit",
+                                                           tint = Color.Black
+                                                       )
+                                                   },
+                                                   onClick = {
+                                                       if (query != "") {
+                                                           keyboard!!.hide()
+                                                           scope.launch {
+                                                               listofPhotosResp =
+                                                                   MainActivityAll().getWallpaperList(query)
+                                                           }
+                                                           loaded = true
+                                                       } else {
+                                                           keyboard!!.hide()
+                                                           //Toast.makeText(context,"Enter a query", Toast.LENGTH_SHORT)
+                                                       }
+                                                   },
+                                               )
+                                           },
+                                           label = { Text("Search for wallpapers") },
+                                           modifier = Modifier.fillMaxWidth(),
+
+                                           maxLines = 1,
+                                           colors = TextFieldDefaults.textFieldColors(
+                                               focusedIndicatorColor = Color.Transparent,
+                                               unfocusedIndicatorColor = Color.Transparent,
+                                               backgroundColor = Color.Magenta.copy(alpha=0.75f),
+                                               cursorColor = Color.Black,
+                                               textColor = Color.Black
+
+                                           ),
+                                           shape = RoundedCornerShape(400f),
+                                           value = query,
+                                           onValueChange = {
+                                               query = it
+                                           })
+                                       Spacer(modifier = Modifier.height(20.dp))
+                                       //                            Column(
+                                       //                                horizontalAlignment = Alignment.End,
+                                       //                                modifier = Modifier.fillMaxWidth()
+                                       //                            ) {
+                                       //                                Button(
+                                       //                                    onClick = {
+                                       //                                        keyboard!!.hide()
+                                       //                                        scope.launch {
+                                       //                                            listofPhotosResp = getWallpaperList(query)
+                                       //                                        }
+                                       //                                        loaded = true
+                                       //                                    }) {
+                                       //                                    Text("Submit")
+                                       //                                }
+                                       //                            }
+                                       Spacer(modifier = Modifier.height(20.dp))
+                                       LazyColumn(
+                                           modifier = Modifier.fillMaxSize(),
+                                           verticalArrangement = Arrangement.spacedBy(12.dp)
+                                       ) {
+
+                                           items(items = listofPhotosResp) {
+                                               if (loaded)
+                                                   Box(modifier = Modifier.fillMaxSize()) {
+                                                       AsyncImage(
+                                                           modifier = Modifier
+                                                               .clickable {
+                                                                   scope.launch {
+                                                                       val bundle = Bundle()
+                                                                       bundle.putString(
+                                                                           "imageURL",
+                                                                           it.src.large
+                                                                       )
+                                                                       bundle.putString(
+                                                                           "photographer",
+                                                                           it.photographer
+                                                                       )
+                                                                       bundle.putString(
+                                                                           "photographerurl",
+                                                                           it.photographer_url
+                                                                       )
+                                                                       bundle.putString(
+                                                                           "id",
+                                                                           it.id.toString()
+                                                                       )
+                                                                       findNavController().navigate(
+                                                                           R.id.action_homeFragment_to_detailedFragment,
+                                                                           bundle
+                                                                       )
+                                                                   }
+
+                                                               }
+                                                               .height(400.dp)
+                                                               .clip(
+                                                                   RoundedCornerShape(50f)
+                                                               )
+                                                               .drawWithContent {
+                                                                   drawContent()
+                                                                   drawRect(
+                                                                       Brush.verticalGradient(
+                                                                           listOf(
+                                                                               Color.Transparent,
+                                                                               Color.Black
+                                                                           ),
+                                                                           0f,
+                                                                           1200f,
+                                                                       )
+                                                                   )
+
+                                                               },
+                                                           contentScale = ContentScale.Crop,
+                                                           model = it.src.medium,
+                                                           contentDescription = "image"
+                                                       )
+
+                                                   }
+
+
+                                           }
+                                       }
+
+                                   }
+
+                               }
                                //}
 
 //                        content ={
 
-                               Column(
-                                   modifier = Modifier
-                                       .fillMaxSize()
-                                       .padding(8.dp)
-                               ) {
 
-                                   TextField(
-                                       trailingIcon = {
-                                           IconButton(
-                                               content = {
-                                                   Icon(
-                                                       Icons.Default.Search,
-                                                       contentDescription = "submit",
-                                                       tint = Color.Black
-                                                   )
-                                               },
-                                               onClick = {
-                                                   if (query != "") {
-                                                       keyboard!!.hide()
-                                                       scope.launch {
-                                                           listofPhotosResp =
-                                                               MainActivityAll().getWallpaperList(query)
-                                                       }
-                                                       loaded = true
-                                                   } else {
-                                                       keyboard!!.hide()
-                                                       //Toast.makeText(context,"Enter a query", Toast.LENGTH_SHORT)
-                                                   }
-                                               },
-                                           )
-                                       },
-                                       label = { Text("Search for wallpapers") },
-                                       modifier = Modifier.fillMaxWidth(),
-
-                                       maxLines = 1,
-                                       colors = TextFieldDefaults.textFieldColors(
-                                           focusedIndicatorColor = Color.Transparent,
-                                           unfocusedIndicatorColor = Color.Transparent,
-                                           backgroundColor = Color.Magenta.copy(alpha=0.75f),
-                                           cursorColor = Color.Black,
-                                           textColor = Color.Black
-
-                                       ),
-                                       shape = RoundedCornerShape(400f),
-                                       value = query,
-                                       onValueChange = {
-                                           query = it
-                                       })
-                                   Spacer(modifier = Modifier.height(20.dp))
-                                   //                            Column(
-                                   //                                horizontalAlignment = Alignment.End,
-                                   //                                modifier = Modifier.fillMaxWidth()
-                                   //                            ) {
-                                   //                                Button(
-                                   //                                    onClick = {
-                                   //                                        keyboard!!.hide()
-                                   //                                        scope.launch {
-                                   //                                            listofPhotosResp = getWallpaperList(query)
-                                   //                                        }
-                                   //                                        loaded = true
-                                   //                                    }) {
-                                   //                                    Text("Submit")
-                                   //                                }
-                                   //                            }
-                                   Spacer(modifier = Modifier.height(20.dp))
-                                   LazyColumn(
-                                       modifier = Modifier.fillMaxSize(),
-                                       verticalArrangement = Arrangement.spacedBy(12.dp)
-                                   ) {
-
-                                       items(items = listofPhotosResp) {
-                                           if (loaded)
-                                               Box(modifier = Modifier.fillMaxSize()) {
-                                                   AsyncImage(
-                                                       modifier = Modifier
-                                                           .clickable {
-                                                               scope.launch {
-                                                                   val bundle = Bundle()
-                                                                   bundle.putString(
-                                                                       "imageURL",
-                                                                       it.src.large
-                                                                   )
-                                                                   bundle.putString(
-                                                                       "photographer",
-                                                                       it.photographer
-                                                                   )
-                                                                   bundle.putString(
-                                                                       "photographerurl",
-                                                                       it.photographer_url
-                                                                   )
-                                                                   bundle.putString(
-                                                                       "id",
-                                                                       it.id.toString()
-                                                                   )
-                                                                   findNavController().navigate(
-                                                                       R.id.action_homeFragment_to_detailedFragment,
-                                                                       bundle
-                                                                   )
-                                                               }
-
-                                                           }
-                                                           .height(400.dp)
-                                                           .clip(
-                                                               RoundedCornerShape(50f)
-                                                           )
-                                                           .drawWithContent {
-                                                               drawContent()
-                                                               drawRect(
-                                                                   Brush.verticalGradient(
-                                                                       listOf(
-                                                                           Color.Transparent,
-                                                                           Color.Black
-                                                                       ),
-                                                                       0f,
-                                                                       1200f,
-                                                                   )
-                                                               )
-
-                                                           },
-                                                       contentScale = ContentScale.Crop,
-                                                       model = it.src.medium,
-                                                       contentDescription = "image"
-                                                   )
-
-                                               }
-
-
-                                       }
-                                   }
-
-                               }
                            }
                     }
 //                    , backgroundColor = Color.Black
