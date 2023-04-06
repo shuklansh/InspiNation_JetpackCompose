@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface WallpaperApi {
 
-    @Headers("Authorization: apikey")
+    @Headers("Authorization: Yourapikey")
     @GET("v1/search")
     suspend fun getSearchResponse(
         @Query("query") query: String,
