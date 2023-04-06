@@ -14,9 +14,9 @@ class HomeViewModel : ViewModel() {
     var isLoading = mutableStateOf(false)
     var listofPhotos = listOf<Photo>()
 
-    init {
-        loadData("new york")
-    }
+//    init {
+//        loadData()
+//    }
 
     fun loadData(query : String){
         viewModelScope.launch {

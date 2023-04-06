@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.shuklansh.inspination_jetpackcompose.ApiPexels.ApiObjectHelper
@@ -25,8 +27,8 @@ class MainActivityAll : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main_all)
-        val navhostFrag =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        var viewmodel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        val navhostFrag = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navcontroller = navhostFrag.navController
 
 //        fun DownloadImage(url: String,filename : String) {

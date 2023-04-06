@@ -1,6 +1,7 @@
 package com.shuklansh.inspination_jetpackcompose.Fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -31,7 +32,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import coil.compose.AsyncImage
 import com.shuklansh.inspination_jetpackcompose.MainActivity.MainActivityAll
@@ -47,6 +51,8 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
 class HomeFragment : Fragment() {
 
+    val viewmodel : HomeViewModel by activityViewModels()
+
 
     @SuppressLint("UnrememberedMutableState")
     @OptIn(ExperimentalComposeUiApi::class)
@@ -55,14 +61,16 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        return ComposeView(requireContext()).apply {
-            setContent {
+        return inflater.inflate(R.layout.fragment_home,container,false).apply {
+            findViewById<ComposeView>(R.id.fragHomeText).setContent {
                 val state = rememberCollapsingToolbarScaffoldState()
-                var loaded by mutableStateOf(false)
+                var loaded by remember{
+                    mutableStateOf(false)
+                }
                 var scope = rememberCoroutineScope()
                 var keyboard = LocalSoftwareKeyboardController.current
                 var query by remember { mutableStateOf("new york") }
-                var listofPhotosResp by rememberSaveable {
+                var listofPhotosResp by remember {
                     mutableStateOf(
                         listOf(
                             Photo(
@@ -117,7 +125,12 @@ class HomeFragment : Fragment() {
                                                    fontWeight = FontWeight.W500
                                                ),
                                                modifier = Modifier
-                                                   .padding(top = 16.dp, bottom = 16.dp, start =16.dp, end = 0.dp )
+                                                   .padding(
+                                                       top = 16.dp,
+                                                       bottom = 16.dp,
+                                                       start = 16.dp,
+                                                       end = 0.dp
+                                                   )
                                                    .road(
                                                        whenCollapsed = Alignment.TopStart,
                                                        whenExpanded = Alignment.BottomStart
@@ -162,8 +175,7 @@ class HomeFragment : Fragment() {
                                                        if (query != "") {
                                                            keyboard!!.hide()
                                                            scope.launch {
-                                                               listofPhotosResp =
-                                                                   MainActivityAll().getWallpaperList(query)
+                                                               listofPhotosResp = viewmodel.getWallpaperList(query)
                                                            }
                                                            loaded = true
                                                        } else {
@@ -240,6 +252,7 @@ class HomeFragment : Fragment() {
                                                                            R.id.action_homeFragment_to_detailedFragment,
                                                                            bundle
                                                                        )
+
                                                                    }
 
                                                                }
