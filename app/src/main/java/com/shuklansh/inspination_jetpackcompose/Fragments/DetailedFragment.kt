@@ -111,7 +111,7 @@ class DetailedFragment : Fragment() {
                     AsyncImage(
                         modifier = Modifier.height(600.dp),
                         model = imglink,
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.Fit,
                         contentDescription = "imageDEtailed"
                     )
                     Spacer(modifier = Modifier.height(20.dp))

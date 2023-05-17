@@ -47,10 +47,10 @@ class MainActivityAll : AppCompatActivity() {
 
     }
 
-    suspend fun getWallpaperList(query: String): List<Photo> {
-        val result = apiCaller.getSearchResponse(query).photos
-        return result
-    }
+//    suspend fun getWallpaperList(query: String): List<Photo> {
+//        val result = apiCaller.getSearchResponse(query).photos
+//        return result
+//    }
 
 
 

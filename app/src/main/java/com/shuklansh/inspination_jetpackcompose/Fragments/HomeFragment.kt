@@ -64,13 +64,13 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home,container,false).apply {
             findViewById<ComposeView>(R.id.fragHomeText).setContent {
                 val state = rememberCollapsingToolbarScaffoldState()
-                var loaded by remember{
+                var loaded by rememberSaveable{
                     mutableStateOf(false)
                 }
                 var scope = rememberCoroutineScope()
                 var keyboard = LocalSoftwareKeyboardController.current
-                var query by remember { mutableStateOf("new york") }
-                var listofPhotosResp by remember {
+                var query by rememberSaveable { mutableStateOf("new york") }
+                var listofPhotosResp by rememberSaveable {
                     mutableStateOf(
                         listOf(
                             Photo(
