@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -30,6 +32,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.activityViewModels
@@ -51,7 +54,7 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
 class HomeFragment : Fragment() {
 
-    val viewmodel : HomeViewModel by activityViewModels()
+    val viewmodel : HomeViewModel by viewModels()
 
 
     @SuppressLint("UnrememberedMutableState")
@@ -69,7 +72,7 @@ class HomeFragment : Fragment() {
                 }
                 var scope = rememberCoroutineScope()
                 var keyboard = LocalSoftwareKeyboardController.current
-                var query by rememberSaveable { mutableStateOf("new york") }
+                var query by rememberSaveable { mutableStateOf("") }
                 var listofPhotosResp by rememberSaveable {
                     mutableStateOf(
                         listOf(
@@ -186,18 +189,33 @@ class HomeFragment : Fragment() {
                                                )
                                            },
                                            label = { Text("Search for wallpapers") },
-                                           modifier = Modifier.fillMaxWidth(),
+                                           modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
 
                                            maxLines = 1,
                                            colors = TextFieldDefaults.textFieldColors(
-                                               focusedIndicatorColor = Color.Transparent,
-                                               unfocusedIndicatorColor = Color.Transparent,
-                                               backgroundColor = Color.Magenta.copy(alpha=0.75f),
+                                               backgroundColor = Color(204, 204, 204, 255),
                                                cursorColor = Color.Black,
-                                               textColor = Color.Black
-
+                                               textColor = Color.Black,
+                                               disabledLabelColor = Color(66, 66, 66, 255),
+                                               focusedIndicatorColor = Color.Transparent,
+                                               unfocusedIndicatorColor = Color.Transparent
                                            ),
-                                           shape = RoundedCornerShape(400f),
+                                           singleLine = true,
+                                           keyboardActions = KeyboardActions(
+                                               onDone = {
+
+                                                   if (query != "") {
+                                                   keyboard!!.hide()
+                                                   scope.launch {
+                                                       listofPhotosResp = viewmodel.getWallpaperList(query)
+                                                   }
+                                                   loaded = true
+                                               } else {
+                                                   keyboard!!.hide()
+                                                   //Toast.makeText(context,"Enter a query", Toast.LENGTH_SHORT)
+                                               } }
+                                           ),
+                                           shape = RoundedCornerShape(8.dp),
                                            value = query,
                                            onValueChange = {
                                                query = it
